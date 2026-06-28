@@ -76,8 +76,7 @@ We have seen that it was very difficult for most students to find work, get an i
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/HackSomeThorns-2025/Dreadful_APIs.git
-   cd Dreadful_APIs
+   git clone https://github.com/tanmaysh1211/ServiceSuite.git
    ```
 
 2. **Install project dependencies**
@@ -115,18 +114,6 @@ We have seen that it was very difficult for most students to find work, get an i
 - lucide-react
 - dotenv
 - openai AI
-
----
-
-## 👥 Team Details
-
-**Team:** Dreadful APIs  
-_Just two students building something useful._
-
-| Name                 | Department       | Reg. No.  |
-| -------------------- | ---------------- | --------- |
-| Kashyap Datta Dhondu | Computer Science | 230905392 |
-| Manas Goel           | Data Science     | 230968160 |
 
 ---
 
