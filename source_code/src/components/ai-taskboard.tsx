@@ -460,13 +460,9 @@ export function AITaskboard() {
       .insert([taskToInsert])
       .select()
 
-    console.log("FULL RESULT:", result)
 
     if (result.error) {
-      console.log("MESSAGE:", result.error.message)
-      console.log("DETAILS:", result.error.details)
-      console.log("HINT:", result.error.hint)
-      console.log("CODE:", result.error.code)
+     
       throw result.error
     }
 
@@ -480,7 +476,6 @@ export function AITaskboard() {
     }
   } catch (error) {
     console.error("Error adding suggestion as task:", error)
-    console.log("ERROR JSON:", JSON.stringify(error, null, 2))
     setMessage("Failed to add suggestion as task")
   }
 }
@@ -550,13 +545,9 @@ export function AITaskboard() {
       .insert([mainTask])
       .select()
 
-    console.log("FULL RESULT:", result)
 
     if (result.error) {
-      console.log("MESSAGE:", result.error.message)
-      console.log("DETAILS:", result.error.details)
-      console.log("HINT:", result.error.hint)
-      console.log("CODE:", result.error.code)
+     
       throw result.error
     }
 
@@ -570,7 +561,6 @@ export function AITaskboard() {
     }
   } catch (error) {
     console.error("Error adding project idea as task:", error)
-    console.log("ERROR JSON:", JSON.stringify(error, null, 2))
     setMessage("Failed to add project idea as task")
   }
 }

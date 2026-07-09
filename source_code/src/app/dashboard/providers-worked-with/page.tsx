@@ -63,8 +63,6 @@ export default function ProvidersWorkedWithPage() {
       .select("*")
       .eq("client_id", user.id)
 
-    console.log("DATA =", data)
-    console.log("ERROR =", error)
       if (error) {
         setError("Failed to load providers.")
         setProviders([])

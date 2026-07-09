@@ -19,7 +19,6 @@ fs.readFile(PDF_PATH, async (err, buffer) => {
   const errors = [];
 
   // Optional: print the full extracted text
-  // console.log(text);
 
   if (!text.includes('INVOICE')) errors.push('Missing "INVOICE" title');
   if (!text.includes('ServiceSuite')) errors.push('Missing company name "ServiceSuite"');
@@ -45,11 +44,9 @@ fs.readFile(PDF_PATH, async (err, buffer) => {
     errors.push('Missing or invalid total');
   }
 
-  // Final report
-  if (errors.length > 0) {
-    console.log('❌ Validation failed with the following issues:\n');
-    errors.forEach(e => console.log('- ' + e));
-  } else {
-    console.log('✅ Invoice PDF passed all validation checks!');
-  }
+  // // Final report
+  // if (errors.length > 0) {
+  //   errors.forEach(e => console.log('- ' + e));
+  // } else {
+  // }
 });

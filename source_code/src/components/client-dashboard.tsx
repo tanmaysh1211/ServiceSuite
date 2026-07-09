@@ -82,7 +82,6 @@ export function ClientDashboard() {
     //   setJobs([])
     // }
     if (error) {
-      console.log("SUPABASE ERROR:", error)
       setError(error.message)
       setJobs([])
     } 
@@ -276,7 +275,6 @@ export function ClientDashboard() {
                           await supabase.from("jobs").update({ status: "completed" }).eq("id", job.id)
                           // Add providers to providers_worked_with
                           const acceptedProviders = job.job_applications.filter(app => app.status === "accepted")
-                          console.log("Accepted Providers:", acceptedProviders)
                           for (const app of acceptedProviders) {
                             await supabase.from("providers_worked_with").upsert({
                               client_id: user?.id,

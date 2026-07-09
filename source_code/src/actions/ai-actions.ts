@@ -19,7 +19,6 @@ export async function generateTasks(
   projectName?: string,
 ) {
   try {
-    console.log("📡 Making OpenAI API call for task generation...")
 
     const completion = await openai.chat.completions.create({
       messages: [
@@ -52,10 +51,8 @@ export async function generateTasks(
       max_tokens: 2048,
     })
 
-    console.log("✅ OPENAI API call successful for task generation!")
 
     const responseText = completion.choices[0]?.message?.content || ""
-    console.log("📝 Raw response text:", responseText)
 
     if (!responseText) {
       console.error("❌ Empty response from OPENAI API")
@@ -64,24 +61,18 @@ export async function generateTasks(
 
     // Clean the response to ensure it's valid JSON
     let cleanedText = responseText.trim()
-    console.log("🧹 Text before cleaning:", cleanedText.substring(0, 300))
 
     // Remove any markdown code blocks if present
     if (cleanedText.startsWith("```json")) {
       cleanedText = cleanedText.replace(/```json\n?/, "").replace(/\n?```$/, "")
-      console.log("🧹 Removed ```json blocks")
     } else if (cleanedText.startsWith("```")) {
       cleanedText = cleanedText.replace(/```\n?/, "").replace(/\n?```$/, "")
-      console.log("🧹 Removed ``` blocks")
     }
 
-    console.log("🧹 Cleaned text:", cleanedText)
 
     let tasks
     try {
       tasks = JSON.parse(cleanedText)
-      console.log("✅ JSON parsing successful!")
-      console.log("📋 Parsed tasks:", tasks)
     } catch (parseError) {
       console.error("❌ JSON Parse Error:", parseError)
       console.error("🔍 Raw response that failed to parse:", responseText)
@@ -95,11 +86,9 @@ export async function generateTasks(
       throw new Error("Response is not an array")
     }
 
-    console.log("✅ Validation passed - tasks is an array with", tasks.length, "items")
 
     // Validate each task has required fields
     const validatedTasks = tasks.map((task: any, index: number) => {
-      console.log(`🔍 Validating task ${index + 1}:`, task)
 
       if (!task.title || !task.description || !task.priority || typeof task.estimatedHours !== "number") {
         console.error(`❌ Invalid task structure at index ${index}:`, task)
@@ -121,8 +110,6 @@ export async function generateTasks(
       }
     })
 
-    console.log("💾 Saving to Supabase...")
-    console.log("📋 Tasks to insert:", validatedTasks)
 
     const { data, error } = await supabase.from("tasks").insert(validatedTasks).select()
 
@@ -132,8 +119,6 @@ export async function generateTasks(
       throw error
     }
 
-    console.log("✅ Successfully saved", data?.length, "tasks to database")
-    console.log("📋 Saved tasks:", data)
 
     return { success: true, tasks: data || [] }
   } catch (error: any) {
@@ -143,7 +128,6 @@ export async function generateTasks(
     console.error("🔍 Error stack:", error.stack)
 
     // Fallback: Create some default tasks if AI fails
-    console.log("🔄 Using fallback tasks due to error:", error.message)
     const fallbackTasks = [
       {
         user_id: userId,
@@ -200,7 +184,6 @@ export async function generateTasks(
     ]
 
     try {
-      console.log("💾 Saving fallback tasks to Supabase...")
       const { data, error: fallbackError } = await supabase.from("tasks").insert(fallbackTasks).select()
 
       if (fallbackError) {
@@ -208,7 +191,6 @@ export async function generateTasks(
         throw fallbackError
       }
 
-      console.log("✅ Fallback tasks saved successfully")
       return {
         success: true,
         tasks: data || [],
