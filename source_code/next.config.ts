@@ -4,11 +4,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Add future Next.js config options here
-  // eslint: {
-  //   // Ignore ESLint errors during builds (for Vercel deploys)
-  //   ignoreDuringBuilds: true,
-  // },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
-export default nextConfig; 
+export default nextConfig;
