@@ -9,7 +9,7 @@ export function createSupabaseServerClient() {
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       cookieOptions: {
         name: 'sb-auth-token',
-        domain: undefined, // Set to your domain if needed
+        domain: undefined,
         path: '/',
         sameSite: 'lax',
         secure: true,
