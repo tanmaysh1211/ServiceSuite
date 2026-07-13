@@ -12,7 +12,6 @@ import { supabase, type Task } from "@/lib/supabaseClient"
 import { InvoiceGenerator } from "./invoice-generator"
 import { Button } from "@/components/ui/button"
 import ProfileCompletenessMeter from "@/components/profile-completeness-meter"
-// If you have shadcn/ui Drawer, import it. If not, you will need to add it to your project.
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { DialogTitle } from "@/components/ui/dialog"
 
@@ -61,7 +60,6 @@ export function ProviderDashboard() {
     try {
       setLoading(true)
       
-      // Fetch all tasks for the user
       const { data: tasks, error } = await supabase
         .from("tasks")
         .select("*")
@@ -69,20 +67,16 @@ export function ProviderDashboard() {
 
       if (error) throw error
 
-      // Calculate unique projects
       const uniqueProjects = new Set(
         (tasks || []).filter(task => task.project_name).map(task => task.project_name)
       )
 
-      // Calculate unique clients
       const uniqueClients = new Set(
         (tasks || []).filter(task => task.client_email).map(task => task.client_email)
       )
 
-      // Calculate monthly revenue (estimated based on completed tasks)
       const completedTasks = (tasks || []).filter(task => task.status === "completed")
       const monthlyRevenue = completedTasks.reduce((sum, task) => {
-        // Assuming $50/hour average rate - you can adjust this
         return sum + (task.estimated_hours * 50)
       }, 0)
 
@@ -111,7 +105,6 @@ export function ProviderDashboard() {
     }
   }
 
-  // Calculate profile completeness
   const calculateCompleteness = () => {
     if (!portfolio) return 0
     const fields = [
@@ -138,7 +131,6 @@ export function ProviderDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Mobile Navigation Drawer */}
       <div className="md:hidden flex justify-between items-center px-4 pt-2">
         <Dialog open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DialogTrigger asChild>
@@ -174,7 +166,6 @@ export function ProviderDashboard() {
         </Dialog>
         <span className="font-bold text-lg bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Job Manager</span>
       </div>
-      {/* Desktop Action Buttons */}
       <div className="hidden md:flex justify-end gap-4">
         <Link href="/dashboard/jobs-marketplace">
           <Button variant="outline">
@@ -201,13 +192,11 @@ export function ProviderDashboard() {
           </Button>
         </Link>
       </div>
-      {/* Profile Completeness Meter */}
       {(!portfolioLoading && calculateCompleteness() < 100) && (
         <div className="px-2 md:px-0">
           <ProfileCompletenessMeter completeness={calculateCompleteness()} />
         </div>
       )}
-      {/* Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-2 md:px-0">
         <Card className="w-full">
           <CardContent className="p-4">
@@ -250,12 +239,10 @@ export function ProviderDashboard() {
         </Card>
       </div>
 
-      {/* AI Taskboard */}
       <div className="px-2 md:px-0">
         <AITaskboard />
       </div>
 
-      {/* Portfolio Management */}
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -284,7 +271,6 @@ export function ProviderDashboard() {
         </CardContent>
       </Card>
 
-      {/* Invoice Generator */}
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -297,7 +283,6 @@ export function ProviderDashboard() {
         </CardContent>
       </Card>
 
-      {/* Calendar Export */}
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
