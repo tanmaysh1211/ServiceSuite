@@ -65,7 +65,6 @@ export function AITaskboard() {
   const [debugResult, setDebugResult] = useState<any>(null)
   const [debugLoading, setDebugLoading] = useState(false)
 
-  // Filters
   const [selectedClient, setSelectedClient] = useState<string>("all")
   const [selectedProject, setSelectedProject] = useState<string>("all")
   const [selectedStatus, setSelectedStatus] = useState<string>("all")
@@ -73,19 +72,15 @@ export function AITaskboard() {
   const [clients, setClients] = useState<Array<{ name: string; email: string; company?: string }>>([])
   const [projects, setProjects] = useState<string[]>([])
 
-  // Manual Task Creation
   const [showManualTaskForm, setShowManualTaskForm] = useState(false)
   const [manualTaskLoading, setManualTaskLoading] = useState(false)
   const [selectedClientForTask, setSelectedClientForTask] = useState<string>("")
 
-  // Tasks List Collapse
   const [isTasksListCollapsed, setIsTasksListCollapsed] = useState(false)
 
-  // Insights and Suggestions Collapse
   const [isInsightsCollapsed, setIsInsightsCollapsed] = useState(false)
   const [isSuggestionsCollapsed, setIsSuggestionsCollapsed] = useState(false)
 
-  // Project Ideas Collapse
   const [isProjectIdeasCollapsed, setIsProjectIdeasCollapsed] = useState(false)
 
   const { user } = useAuth()
@@ -97,7 +92,6 @@ export function AITaskboard() {
   }, [user])
 
   useEffect(() => {
-    // Update filtered tasks when tasks or filters change
     filterTasks()
   }, [tasks, selectedClient, selectedProject, selectedStatus, selectedPriority])
 
@@ -219,7 +213,6 @@ export function AITaskboard() {
     const projectName = formData.get("projectName") as string
 
     try {
-      // Find client details if client email is provided
       let clientName = ""
       let clientCompany = ""
       if (clientEmail && clientEmail !== "new" && clientEmail !== "none") {
@@ -239,7 +232,6 @@ export function AITaskboard() {
         description: description.trim(),
         priority,
         estimated_hours: estimatedHours,
-        // status: "pending" as const,
         status: "todo" as const,
         client_name: clientName || null,
         client_email: clientEmail !== "new" && clientEmail !== "none" ? clientEmail : null,
@@ -251,12 +243,9 @@ export function AITaskboard() {
 
       if (error) throw error
 
-      // Add new task to the beginning of the list
       setTasks(prevTasks => [data[0], ...prevTasks])
       setMessage("Task created successfully!")
       setShowManualTaskForm(false)
-      
-      // Reset form
       setSelectedClientForTask("")
     } catch (error) {
       console.error("Error creating task:", error)
@@ -287,7 +276,6 @@ export function AITaskboard() {
         projectName || undefined,
       )
       if (result.success && result.tasks) {
-        // Append new tasks to existing tasks instead of replacing
         setTasks((prevTasks) => [...result.tasks, ...prevTasks])
         if (result.message) {
           setMessage(result.message)
@@ -326,7 +314,6 @@ export function AITaskboard() {
 
   const handleTaskBreakdown = async (task: Task) => {
     if (taskBreakdowns[task.id]) {
-      // Toggle collapse if already expanded
       if (expandedTask === task.id) {
         setExpandedTask(null)
       } else {
@@ -398,39 +385,6 @@ export function AITaskboard() {
     }
   }
 
-  // const addSuggestionAsTask = async (suggestion: any) => {
-  //   if (!user) return
-
-  //   try {
-  //     const taskToInsert = {
-  //       user_id: user.id,
-  //       title: suggestion.title,
-  //       description: suggestion.description,
-  //       priority: suggestion.priority,
-  //       estimated_hours: suggestion.estimatedHours,
-  //       status: "pending" as const,
-  //       client_name: selectedClient !== "all" ? clients.find((c) => c.email === selectedClient)?.name : null,
-  //       client_email: selectedClient !== "all" ? selectedClient : null,
-  //       client_company: selectedClient !== "all" ? clients.find((c) => c.email === selectedClient)?.company : null,
-  //       project_name: selectedProject !== "all" ? selectedProject : null,
-  //     }
-
-  //     const { data, error } = await supabase.from("tasks").insert([taskToInsert]).select()
-  //     console.log("DATA:", data)
-  //     console.log("ERROR:", error)
-  //     if (error) throw error
-
-  //     if (data && data[0]) {
-  //       setTasks((prevTasks) => [data[0], ...prevTasks])
-  //       setSuggestions((prevSuggestions) => prevSuggestions.filter((s) => s.title !== suggestion.title))
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding suggestion as task:", error)
-  //     // console.error(JSON.stringify(err, null, 2))
-  //     setMessage("Failed to add suggestion as task")
-  //   }
-  // }
-
   const addSuggestionAsTask = async (suggestion: any) => {
   if (!user) return
 
@@ -441,7 +395,6 @@ export function AITaskboard() {
       description: suggestion.description,
       priority: suggestion.priority,
       estimated_hours: suggestion.estimatedHours,
-      // status: "pending" as const,
       status: "todo" as const,
       client_name:
         selectedClient !== "all"
@@ -480,42 +433,6 @@ export function AITaskboard() {
   }
 }
 
-  // const addProjectIdeaAsTasks = async (idea: any) => {
-  //   if (!user) return
-
-  //   try {
-  //     // Create a main task for the project idea
-  //     const mainTask = {
-  //       user_id: user.id,
-  //       title: idea.title,
-  //       description: idea.description,
-  //       priority: "high" as const,
-  //       estimated_hours: 40, // Default estimate for a full project
-  //       status: "pending" as const,
-  //       client_name: selectedClient !== "all" ? clients.find((c) => c.email === selectedClient)?.name : null,
-  //       client_email: selectedClient !== "all" ? selectedClient : null,
-  //       client_company: selectedClient !== "all" ? clients.find((c) => c.email === selectedClient)?.company : null,
-  //       project_name: selectedProject !== "all" ? selectedProject : null,
-  //     }
-
-  //     const { data, error } = await supabase.from("tasks").insert([mainTask]).select()
-  //     console.log("DATA:", data)
-  //     console.log("ERROR:", error)
-  //     if (error) throw error
-
-  //     if (data && data[0]) {
-  //       setTasks((prevTasks) => [data[0], ...prevTasks])
-  //       setProjectIdeas((prevIdeas) => prevIdeas.filter((p) => p.title !== idea.title))
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding project idea as task:", error)
-  //     console.error(JSON.stringify(err, null, 2))
-  //     setMessage("Failed to add project idea as task")
-  //   }
-  // }
-
-
-
   const addProjectIdeaAsTasks = async (idea: any) => {
   if (!user) return
 
@@ -526,7 +443,6 @@ export function AITaskboard() {
       description: idea.description,
       priority: "high" as const,
       estimated_hours: 40,
-      // status: "pending" as const,
       status: "todo" as const,
       client_name:
         selectedClient !== "all"
@@ -631,7 +547,6 @@ export function AITaskboard() {
 
   return (
     <div className="space-y-6">
-      {/* Enhanced Stats */}
       {filteredTasks.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="bg-white dark:bg-gray-800">
@@ -688,7 +603,6 @@ export function AITaskboard() {
         </div>
       )}
 
-      {/* Project Ideas Generator */}
       <Card className="bg-white dark:bg-gray-800">
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -841,7 +755,6 @@ export function AITaskboard() {
         </CardContent>
       </Card>
 
-      {/* AI Task Generator */}
       <Card className="bg-white dark:bg-gray-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -866,7 +779,6 @@ export function AITaskboard() {
                 required
               />
             </div>
-            {/* Client Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="clientName" className="flex items-center gap-2">
@@ -943,7 +855,6 @@ export function AITaskboard() {
         </CardContent>
       </Card>
 
-      {/* Manual Task Creation */}
       <Card className="bg-white dark:bg-gray-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -1073,7 +984,6 @@ export function AITaskboard() {
                   </div>
                 </motion.div>
 
-                {/* Client Selection */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1102,7 +1012,6 @@ export function AITaskboard() {
                   </Select>
                 </motion.div>
 
-                {/* New Client Fields (shown when "Create New Client" is selected) */}
                 <AnimatePresence>
                   {selectedClientForTask === "new" && (
                     <motion.div 
@@ -1179,7 +1088,6 @@ export function AITaskboard() {
         </CardContent>
       </Card>
 
-      {/* AI Insights */}
       {tasks.length > 0 && (
         <Card className="bg-white dark:bg-gray-800">
           <CardHeader>
@@ -1311,7 +1219,6 @@ export function AITaskboard() {
         </Card>
       )}
 
-      {/* Task Suggestions */}
       {tasks.length > 0 && (
         <Card className="bg-white dark:bg-gray-800">
           <CardHeader>
@@ -1415,7 +1322,6 @@ export function AITaskboard() {
           </CardContent>
         </Card>
       )}
-      {/* Client and Project Filters */}
       {tasks.length > 0 && (
         <Card className="bg-white dark:bg-gray-800">
           <CardHeader>
@@ -1529,7 +1435,6 @@ export function AITaskboard() {
         </Card>
       )}
 
-      {/* Dynamic Status Bar */}
       {tasks.length > 0 && (
         <Card className="bg-white dark:bg-gray-800">
           <CardHeader>
@@ -1548,14 +1453,12 @@ export function AITaskboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {/* Status Bar */}
               <div className="relative">
                 <div className="flex h-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
                   {(() => {
                     const distribution = getStatusDistribution()
                     return (
                       <>
-                        {/* Pending - Red */}
                         {distribution.todo > 0 && (
                           <div 
                             className="bg-red-500 flex items-center justify-center text-white text-xs font-medium transition-all duration-300"
@@ -1566,7 +1469,6 @@ export function AITaskboard() {
                           </div>
                         )}
                         
-                        {/* In Progress - Yellow */}
                         {distribution.inProgress > 0 && (
                           <div 
                             className="bg-yellow-500 flex items-center justify-center text-white text-xs font-medium transition-all duration-300"
@@ -1577,7 +1479,6 @@ export function AITaskboard() {
                           </div>
                         )}
                         
-                        {/* Completed - Green */}
                         {distribution.completed > 0 && (
                           <div 
                             className="bg-green-500 flex items-center justify-center text-white text-xs font-medium transition-all duration-300"
@@ -1588,7 +1489,6 @@ export function AITaskboard() {
                           </div>
                         )}
                         
-                        {/* Empty state */}
                         {distribution.todo === 0 && distribution.inProgress === 0 && distribution.completed === 0 && (
                           <div className="w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-xs">
                             No tasks match current filters
@@ -1600,7 +1500,6 @@ export function AITaskboard() {
                 </div>
               </div>
 
-              {/* Status Legend */}
               <div className="flex flex-wrap gap-4 text-sm">
                 {(() => {
                   const distribution = getStatusDistribution()
@@ -1650,11 +1549,9 @@ export function AITaskboard() {
         </Card>
       )}
 
-      {/* Tasks List */}
       {tasks.length > 0 && (
         <Card className="bg-white dark:bg-gray-800">
           <CardContent className="p-0">
-            {/* Collapsible Tasks List Header */}
             <div 
               className="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700"
               onClick={toggleTasksListCollapse}
@@ -1684,7 +1581,6 @@ export function AITaskboard() {
               </div>
             </div>
 
-            {/* Collapsible Tasks Content */}
             <AnimatePresence>
               {!isTasksListCollapsed && (
                 <motion.div 
@@ -1747,7 +1643,6 @@ export function AITaskboard() {
                               >
                                 <Card className="hover:shadow-md transition-shadow bg-white dark:bg-gray-800 w-full">
                                   <CardContent className="p-0">
-                                    {/* Collapsible Header */}
                                     <div 
                                       className="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                                       onClick={() => toggleTaskCollapse(task.id)}
@@ -1787,7 +1682,6 @@ export function AITaskboard() {
                                       </div>
                                     </div>
 
-                                    {/* Collapsible Content */}
                                     <AnimatePresence>
                                       {!collapsedTasks.has(task.id) && (
                                         <motion.div 
@@ -1799,7 +1693,6 @@ export function AITaskboard() {
                                         >
                                           <p className="text-gray-600 dark:text-gray-300 mb-3 mt-3 text-sm break-words max-w-full">{task.description}</p>
 
-                                          {/* Task Breakdown */}
                                           <div className="mb-3">
                                             <Button variant="outline" size="sm" onClick={() => handleTaskBreakdown(task)} className="text-xs">
                                               {expandedTask === task.id ? (
