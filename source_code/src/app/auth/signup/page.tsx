@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -47,7 +46,6 @@ function SignUpContent() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-gray-950 dark:from-background dark:to-muted p-4">
       <div className="mb-6 flex flex-col items-center">
-        {/* Brand/Logo */}
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-2 shadow-lg">
           <span className="text-white text-2xl font-extrabold tracking-tight">S</span>
         </div>
