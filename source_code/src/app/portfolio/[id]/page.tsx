@@ -27,7 +27,6 @@ interface PortfolioWithProvider extends Portfolio {
   provider_email: string
 }
 
-// Utility Functions
 const getInitials = (name: string) =>
   name
     .split(" ")
@@ -105,7 +104,6 @@ function PortfolioDetailContent() {
       if (!params.id) return
       const { data, error } = await supabase
         .from("reviews")
-        // .select(`rating, review_text, created_at, client_id, job_id, profiles:profiles!reviews_client_id_fkey(name), job:jobs(title)`)
         .select(`
           rating,
           review_text,
@@ -137,7 +135,6 @@ function PortfolioDetailContent() {
     fetchReviews()
   }, [params.id])
 
-  // Sort reviews based on sortOrder
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortOrder === 'desc') return b.rating - a.rating
     return a.rating - b.rating
@@ -184,7 +181,6 @@ function PortfolioDetailContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4 w-full">
@@ -213,9 +209,7 @@ function PortfolioDetailContent() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Profile Overview */}
             <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
               <CardContent className="p-6">
                 <div className="flex items-start gap-6 mb-6">
@@ -265,7 +259,6 @@ function PortfolioDetailContent() {
                   </div>
                 </div>
 
-                {/* Full Bio */}
                 <div className="mb-6">
                   <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-3">
                     About Me
@@ -275,7 +268,6 @@ function PortfolioDetailContent() {
                   </p>
                 </div>
 
-                {/* Skills */}
                 <div className="mb-6">
                   <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-3">
                     Skills & Expertise
@@ -293,7 +285,6 @@ function PortfolioDetailContent() {
                   </div>
                 </div>
 
-                {/* Experience & Education */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {portfolio.experience_years && (
                     <div>
@@ -320,7 +311,6 @@ function PortfolioDetailContent() {
                   )}
                 </div>
 
-                {/* Certifications */}
                 {portfolio.certifications && portfolio.certifications.length > 0 && (
                   <div className="mt-6">
                     <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-3">
@@ -340,7 +330,6 @@ function PortfolioDetailContent() {
                   </div>
                 )}
 
-                {/* Portfolio Links */}
                 {portfolio.portfolio_links && portfolio.portfolio_links.length > 0 && (
                   <div className="mt-6">
                     <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-3 flex items-center gap-2">
@@ -366,7 +355,6 @@ function PortfolioDetailContent() {
               </CardContent>
             </Card>
 
-            {/* Reviews Section */}
             <Card className="border-0 shadow-xl bg-white dark:bg-gray-800 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-lg font-semibold">
@@ -393,7 +381,6 @@ function PortfolioDetailContent() {
                         key={idx}
                         className="group rounded-2xl border border-gray-200 dark:border-gray-700 p-6 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200"
                       >
-                        {/* Top Row: Rating + Date + Job Title */}
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
                           <div className="flex items-center gap-2">
                             <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
@@ -410,7 +397,6 @@ function PortfolioDetailContent() {
                           )}
                         </div>
 
-                        {/* Reviewer Name */}
                         <div className="flex items-center gap-2 mb-2">
                           <User className="h-4 w-4 text-indigo-400 dark:text-indigo-300" />
                           <span className="font-medium text-gray-900 dark:text-white">
@@ -420,7 +406,6 @@ function PortfolioDetailContent() {
                           </span>
                         </div>
 
-                        {/* Review Body */}
                         <div className="text-indigo-700 dark:text-indigo-200 text-base mt-1 leading-relaxed italic border-l-4 border-indigo-300 dark:border-indigo-600 pl-4">
                           {review.review_text ? (
                             <>“{review.review_text}”</>
@@ -437,9 +422,7 @@ function PortfolioDetailContent() {
 
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Pricing Card */}
             <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -463,7 +446,6 @@ function PortfolioDetailContent() {
               </CardContent>
             </Card>
 
-            {/* Contact Info */}
             <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -491,7 +473,6 @@ function PortfolioDetailContent() {
               </CardContent>
             </Card>
 
-            {/* Response Time */}
             <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
