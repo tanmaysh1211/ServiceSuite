@@ -32,7 +32,6 @@ function DashboardContent() {
       <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-indigo-300 opacity-30 dark:opacity-20 blur-3xl animate-pulse-slow z-0" />
       <div className="absolute top-60 right-[-100px] w-[400px] h-[400px] rounded-full bg-purple-300 opacity-30 dark:opacity-20 blur-3xl animate-pulse-slow z-0" />
 
-      {/* Header */}
       <motion.header
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -47,11 +46,10 @@ function DashboardContent() {
                 {userProfile.role === "provider" ? "Service Provider" : "Client"}
               </Badge>
             </div>
+
             <div className="flex flex-1" />
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-auto">
-              {/* Hamburger menu for user actions on mobile, full user bar on desktop */}
               <div className="relative w-full sm:w-auto flex justify-end">
-                {/* Mobile: Hamburger menu */}
                 <div className="block sm:hidden">
                   <Dialog>
                     <DialogTrigger asChild>
@@ -88,7 +86,7 @@ function DashboardContent() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                {/* Desktop: Avatar triggers dialog */}
+
                 <div className="hidden sm:flex items-center gap-2">
                   <Dialog>
                     <DialogTrigger asChild>
@@ -131,7 +129,6 @@ function DashboardContent() {
         </div>
       </motion.header>
 
-      {/* Main Content */}
       <motion.main
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -147,12 +144,6 @@ function DashboardContent() {
 export default function DashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [user, loading, router]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
