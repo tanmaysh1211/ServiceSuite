@@ -77,10 +77,6 @@ export function ClientDashboard() {
       .eq("client_id", user.id)
       .order("created_at", { ascending: false })
 
-    // if (error) {
-    //   setError("Failed to load your jobs and applications.")
-    //   setJobs([])
-    // }
     if (error) {
       setError(error.message)
       setJobs([])
@@ -109,14 +105,7 @@ export function ClientDashboard() {
   useEffect(() => {
     fetchJobsAndApplications()
   }, [fetchJobsAndApplications])
-
-  const handleDeleteJob = async () => {
-    if (!jobToDelete || !user) return
-    setIsDeleting(true)
-
-    const result = await deleteJob(jobToDelete.id, user.id)
-
-    if (result.success) {
+success) {
       toast.success("Job deleted successfully")
       setJobs((prev) => prev.filter((job) => job.id !== jobToDelete.id))
       setJobToDelete(null)
@@ -135,7 +124,14 @@ export function ClientDashboard() {
       case "completed":
         return "default"
       case "cancelled":
-        return "destructive"
+        return "destructive
+  const handleDeleteJob = async () => {
+    if (!jobToDelete || !user) return
+    setIsDeleting(true)
+
+    const result = await deleteJob(jobToDelete.id, user.id)
+
+    if (result."
       default:
         return "outline"
     }
@@ -178,7 +174,6 @@ export function ClientDashboard() {
         </DialogContent>
       </Dialog>
       <div className="space-y-8 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-indigo-950/80 to-purple-900/80 rounded-2xl shadow-lg p-6 mb-2">
           <div>
             <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent drop-shadow-sm">
@@ -210,7 +205,6 @@ export function ClientDashboard() {
           </div>
         </div>
 
-        {/* My Job Postings */}
         <Card className="rounded-2xl shadow-xl border-0">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
@@ -264,16 +258,13 @@ export function ClientDashboard() {
                       <Trash className="h-4 w-4 mr-2" />
                       Delete
                     </Button>
-                    {/* Finish Job Button */}
                     {job.status !== "completed" && job.job_applications.length > 0 && job.job_applications.filter(app => app.status === "accepted").length > 0 && job.job_applications.filter(app => app.status === "accepted").every(app => app.provider_marked_done) && (
                       <Button
                         size="sm"
                         variant="secondary"
                         className="w-full sm:w-auto"
                         onClick={async () => {
-                          // Mark job as completed
                           await supabase.from("jobs").update({ status: "completed" }).eq("id", job.id)
-                          // Add providers to providers_worked_with
                           const acceptedProviders = job.job_applications.filter(app => app.status === "accepted")
                           for (const app of acceptedProviders) {
                             await supabase.from("providers_worked_with").upsert({
@@ -283,7 +274,6 @@ export function ClientDashboard() {
                               created_at: new Date().toISOString()
                             }, { onConflict: "client_id,provider_id,job_id" })
                           }
-                          // Optionally, refresh jobs
                           fetchJobsAndApplications()
                         }}
                       >
@@ -297,7 +287,6 @@ export function ClientDashboard() {
           </CardContent>
         </Card>
 
-        {/* Recent Applications */}
         <Card className="rounded-2xl shadow-xl border-0">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
