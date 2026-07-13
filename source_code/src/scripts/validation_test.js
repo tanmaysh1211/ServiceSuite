@@ -18,8 +18,6 @@ fs.readFile(PDF_PATH, async (err, buffer) => {
   const text = data.text;
   const errors = [];
 
-  // Optional: print the full extracted text
-
   if (!text.includes('INVOICE')) errors.push('Missing "INVOICE" title');
   if (!text.includes('ServiceSuite')) errors.push('Missing company name "ServiceSuite"');
 
@@ -43,10 +41,4 @@ fs.readFile(PDF_PATH, async (err, buffer) => {
   if (!/Total:\s*\$?\d+\.\d{2}/.test(text)) {
     errors.push('Missing or invalid total');
   }
-
-  // // Final report
-  // if (errors.length > 0) {
-  //   errors.forEach(e => console.log('- ' + e));
-  // } else {
-  // }
 });
