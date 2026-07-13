@@ -28,7 +28,6 @@ interface PortfolioWithProvider extends Portfolio {
   reviews_count: number
 }
 
-// Utility Functions
 const getInitials = (name: string) =>
   name
     .split(" ")
@@ -62,7 +61,6 @@ function FreelancersContent() {
   const router = useRouter()
 
   useEffect(() => {
-    // Redirect providers to their dashboard
     if (userProfile && userProfile.role === "provider") {
       router.push("/dashboard")
     }
@@ -73,7 +71,6 @@ function FreelancersContent() {
       setLoading(true)
       setError("")
 
-      // Fetch portfolios (without reviews join)
       const { data: portfoliosData, error: portfoliosError } = await supabase
         .from("portfolios")
         .select(`*, profiles!portfolios_provider_id_fkey ( name, email )`)
@@ -81,7 +78,6 @@ function FreelancersContent() {
         .eq("is_verified", true)
         .order("created_at", { ascending: false })
 
-      // Fetch all reviews
       const { data: reviewsData, error: reviewsError } = await supabase
         .from("reviews")
         .select("provider_id, rating")
@@ -106,14 +102,12 @@ function FreelancersContent() {
         setPortfolios(transformed)
         setFilteredPortfolios(transformed)
       }
-
       setLoading(false)
     }
 
     fetchPortfoliosAndReviews()
   }, [])
 
-  // Search/filter logic
   useEffect(() => {
     if (!search.trim()) {
       setFilteredPortfolios(portfolios)
@@ -136,7 +130,6 @@ function FreelancersContent() {
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
             <Button
@@ -158,7 +151,6 @@ function FreelancersContent() {
         </div>
       </div>
 
-      {/* Search and Filters */}
       <Card className="border-0 shadow-lg bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
         <CardContent className="p-6">
           <form className="flex gap-4" onSubmit={e => { e.preventDefault(); }}>
@@ -187,7 +179,6 @@ function FreelancersContent() {
         </CardContent>
       </Card>
 
-      {/* Portfolios */}
       <div className="grid gap-6">
         {loading && (
           <div className="text-center py-12">
@@ -251,7 +242,6 @@ function FreelancersContent() {
                       </div>
                     </div>
 
-                    {/* Stats */}
                     <div className="flex items-center gap-6 mb-4 text-sm">
                       <div className="flex items-center gap-1 text-yellow-600">
                         <Star className="h-4 w-4 fill-current" />
@@ -282,7 +272,6 @@ function FreelancersContent() {
                       )}
                     </div>
 
-                    {/* Skills */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {portfolio.skills.slice(0, 5).map((skill, idx) => (
                         <Badge
@@ -304,7 +293,6 @@ function FreelancersContent() {
                     </div>
                   </div>
 
-                  {/* Right Section */}
                   <div className="lg:w-64 p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border-l border-gray-200 dark:border-gray-700">
                     <div className="text-center mb-4">
                       <div className="flex items-center justify-center gap-1 mb-1">
