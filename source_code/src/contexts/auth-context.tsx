@@ -30,21 +30,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // const fetchUserProfile = useCallback(async (userId: string) => {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("profiles")
-  //       .select("*")
-  //       .eq("id", userId)
-  //       .single();
-
-  //     if (error) throw error;
-  //     setUserProfile(data);
-  //   } catch (error) {
-  //     console.error("Error fetching user profile:", error);
-  //   }
-  // }, []);
-
  const fetchUserProfile = useCallback(async (userId: string) => {
 
   try {
@@ -187,7 +172,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// ---------- Hook ----------
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
