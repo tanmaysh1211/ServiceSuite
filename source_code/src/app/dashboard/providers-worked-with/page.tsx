@@ -52,12 +52,6 @@ export default function ProvidersWorkedWithPage() {
     const fetchProviders = async () => {
       setLoading(true)
       setError("")
-      // const { data, error } = await supabase
-      //   .from("providers_worked_with")
-      //   .select(`*, provider_profile:profiles!providers_worked_with_provider_id_fkey(name), 
-      //     job:jobs!providers_worked_with_job_id_fkey(title)`)
-      //   .eq("client_id", user.id)
-      //   .order("created_at", { ascending: false })
       const { data, error } = await supabase
       .from("providers_worked_with")
       .select("*")
