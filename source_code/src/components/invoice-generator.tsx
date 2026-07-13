@@ -100,7 +100,6 @@ export function InvoiceGenerator() {
       [field]: value,
     }
 
-    // Calculate amount for this item
     if (field === "quantity" || field === "rate") {
       updatedItems[index].amount = updatedItems[index].quantity * updatedItems[index].rate
     }
@@ -110,7 +109,6 @@ export function InvoiceGenerator() {
       items: updatedItems,
     }))
 
-    // Recalculate totals
     calculateTotals(updatedItems)
   }
 
@@ -156,7 +154,6 @@ export function InvoiceGenerator() {
     try {
       await generateInvoicePDF(invoiceData)
       setOpen(false)
-      // Reset form
       setInvoiceData({
         ...invoiceData,
         invoiceNumber: generateInvoiceNumber(),
@@ -209,9 +206,7 @@ export function InvoiceGenerator() {
       const result = await saveInvoice(invoiceData, user.id)
       if (result.success) {
         setMessage("Invoice saved successfully!")
-        // Refresh invoices list
         fetchInvoices()
-        // Reset form
         setInvoiceData({
           ...invoiceData,
           invoiceNumber: generateInvoiceNumber(),
@@ -270,7 +265,6 @@ export function InvoiceGenerator() {
     try {
       const result = await updateInvoiceStatus(invoiceId, status)
       if (result.success) {
-        // Update local state
         setInvoices(prev => prev.map(invoice => 
           invoice.id === invoiceId ? { ...invoice, status } : invoice
         ))
@@ -360,7 +354,6 @@ export function InvoiceGenerator() {
           </DialogHeader>
 
           <div className="space-y-6 w-full">
-            {/* Invoice Details */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
@@ -398,7 +391,6 @@ export function InvoiceGenerator() {
               </CardContent>
             </Card>
 
-            {/* Provider Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
@@ -452,7 +444,6 @@ export function InvoiceGenerator() {
               </CardContent>
             </Card>
 
-            {/* Client Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
@@ -499,8 +490,6 @@ export function InvoiceGenerator() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Invoice Items */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
@@ -570,7 +559,6 @@ export function InvoiceGenerator() {
               </CardContent>
             </Card>
 
-            {/* Totals and Tax */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
@@ -620,7 +608,6 @@ export function InvoiceGenerator() {
               </CardContent>
             </Card>
 
-            {/* Notes and Payment Terms */}
             <Card>
               <CardContent className="space-y-4 w-full">
                 <div>
@@ -645,7 +632,6 @@ export function InvoiceGenerator() {
               </CardContent>
             </Card>
 
-            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row justify-between gap-3 w-full">
               <Button variant="outline" onClick={() => setOpen(false)}>
                 Cancel
@@ -706,7 +692,6 @@ export function InvoiceGenerator() {
         </DialogContent>
       </Dialog>
 
-      {/* Past Invoices Dialog */}
       <Dialog open={pastInvoicesOpen} onOpenChange={setPastInvoicesOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" onClick={() => fetchInvoices()}>
@@ -775,7 +760,6 @@ export function InvoiceGenerator() {
                             size="sm"
                             variant="outline"
                             onClick={() => {
-                              // Update status to sent
                               handleUpdateInvoiceStatus(invoice.id, "sent")
                             }}
                             disabled={invoice.status === "sent" || invoice.status === "paid"}
@@ -787,7 +771,6 @@ export function InvoiceGenerator() {
                             size="sm"
                             variant="outline"
                             onClick={() => {
-                              // Update status to paid
                               handleUpdateInvoiceStatus(invoice.id, "paid")
                             }}
                             disabled={invoice.status === "paid"}
