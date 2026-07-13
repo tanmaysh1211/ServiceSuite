@@ -19,10 +19,6 @@ interface ApplicationAcceptedEmailProps {
   applicationUrl?: string;
 }
 
-// const baseUrl = process.env.VERCEL_URL
-//   ? `https://${process.env.VERCEL_URL}`
-//   : "http://localhost:3000";
-
 const baseUrl = "http://localhost:3000";
 
 export const ApplicationAcceptedEmail = ({
