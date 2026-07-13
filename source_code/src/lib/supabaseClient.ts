@@ -1,17 +1,4 @@
-// import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
-
-// export const supabase = createPagesBrowserClient({
-//   cookieOptions: {
-//     name: 'sb-auth-token',
-//     domain: undefined, // Set to your domain if needed
-//     path: '/',
-//     sameSite: 'lax',
-//     secure: true,
-//   }
-// });
-
 import { createClient } from "@supabase/supabase-js";
-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
@@ -98,8 +85,8 @@ export interface Portfolio {
   skills: string[]
   location?: string
   hourly_rate?: number
-  rating: number  // Client-managed (not editable by provider)
-  reviews_count: number  // Client-managed (not editable by provider)
+  rating: number  
+  reviews_count: number  
   availability: string
   experience_years?: number
   education?: string
@@ -162,14 +149,7 @@ export interface Bookmark {
   created_at: string
 }
 
-// Type for portfolio creation/editing (excludes client-managed fields)
 export type PortfolioFormData = Omit<Portfolio, 'id' | 'provider_id' | 'rating' | 'reviews_count' | 'created_at' | 'updated_at'>;
-
-// Type for job creation/editing (excludes auto-managed fields)
 export type JobFormData = Omit<Job, 'id' | 'client_id' | 'views_count' | 'applications_count' | 'created_at' | 'updated_at'>;
-
-// Type for job application creation
 export type JobApplicationFormData = Omit<JobApplication, 'id' | 'created_at' | 'updated_at'>;
-
-// Type for bookmark creation
 export type BookmarkFormData = Omit<Bookmark, 'id' | 'created_at'>;
