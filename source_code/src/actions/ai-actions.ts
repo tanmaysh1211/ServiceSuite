@@ -1,11 +1,7 @@
-"use server"
-
-// import Groq from "groq-sdk"
 import OpenAI from "openai"
 import { supabase } from "@/lib/supabaseClient"
 import type { Invoice } from "@/lib/supabaseClient"
 
-// Initialize Groq with your API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
@@ -45,7 +41,6 @@ export async function generateTasks(
           content: `Create a detailed task list for this project, only the json: ${projectDescription}`,
         },
       ],
-      // model: "gemma2-9b-it",
       model: "gpt-4o-mini",
       temperature: 0.7,
       max_tokens: 2048,
@@ -59,10 +54,8 @@ export async function generateTasks(
       throw new Error("Empty response from OPENAI API")
     }
 
-    // Clean the response to ensure it's valid JSON
     let cleanedText = responseText.trim()
 
-    // Remove any markdown code blocks if present
     if (cleanedText.startsWith("```json")) {
       cleanedText = cleanedText.replace(/```json\n?/, "").replace(/\n?```$/, "")
     } else if (cleanedText.startsWith("```")) {
@@ -80,14 +73,12 @@ export async function generateTasks(
       throw new Error(`Failed to parse JSON response: ${parseError}`)
     }
 
-    // Validate the tasks array
     if (!Array.isArray(tasks)) {
       console.error("❌ Response is not an array:", typeof tasks, tasks)
       throw new Error("Response is not an array")
     }
 
 
-    // Validate each task has required fields
     const validatedTasks = tasks.map((task: any, index: number) => {
 
       if (!task.title || !task.description || !task.priority || typeof task.estimatedHours !== "number") {
@@ -101,7 +92,6 @@ export async function generateTasks(
         description: String(task.description),
         priority: task.priority,
         estimated_hours: Number(task.estimatedHours),
-        // status: "pending" as const,
         status: "todo" as const,
         client_name: clientName || null,
         client_email: clientEmail || null,
@@ -127,7 +117,6 @@ export async function generateTasks(
     console.error("🔍 Error message:", error.message)
     console.error("🔍 Error stack:", error.stack)
 
-    // Fallback: Create some default tasks if AI fails
     const fallbackTasks = [
       {
         user_id: userId,
@@ -135,7 +124,6 @@ export async function generateTasks(
         description: "Research market needs, define project scope, and create a detailed project plan",
         priority: "high",
         estimated_hours: 4,
-        // status: "pending",
         status: "todo" as const,
         client_name: clientName || null,
         client_email: clientEmail || null,
@@ -148,7 +136,6 @@ export async function generateTasks(
         description: "Break down the project into phases with specific deadlines and milestones",
         priority: "high",
         estimated_hours: 2,
-        // status: "pending",
         status: "todo" as const,
         client_name: clientName || null,
         client_email: clientEmail || null,
@@ -161,7 +148,6 @@ export async function generateTasks(
         description: "Create initial designs, wireframes, or prototypes for the project",
         priority: "medium",
         estimated_hours: 6,
-        // status: "pending",
         status: "todo" as const,
         client_name: clientName || null,
         client_email: clientEmail || null,
@@ -174,7 +160,6 @@ export async function generateTasks(
         description: "Test all features and ensure quality standards are met",
         priority: "medium",
         estimated_hours: 3,
-        // status: "pending",
         status: "todo" as const,
         client_name: clientName || null,
         client_email: clientEmail || null,
@@ -232,7 +217,6 @@ export async function deleteTask(taskId: string) {
 export async function generateTaskSuggestions(currentTasks: string[], projectType: string) {
   try {
     const completion = await openai.chat.completions.create({
-      // model: "gpt-4.1-mini",
       messages: [
         {
           role: "system",
@@ -261,7 +245,6 @@ export async function generateTaskSuggestions(currentTasks: string[], projectTyp
           Suggest additional complementary tasks:`,
         },
       ],
-      // model: "llama3-70b-8192",
       model: "gpt-4o-mini",
       temperature: 0.8,
       max_tokens: 1024,
@@ -318,7 +301,6 @@ export async function generateProjectInsights(tasks: any[]) {
           Provide project insights, RETURN ONLY JSON:`,
         },
       ],
-      // model: "gemma2-9b-it",
       model: "gpt-4o-mini",
       temperature: 0.6,
       max_tokens: 1536,
@@ -369,7 +351,6 @@ export async function generateTaskBreakdown(taskTitle: string, taskDescription: 
           Create specific subtasks:`,
         },
       ],
-      // model: "llama3-70b-8192",
       model: "gpt-4o-mini",
       temperature: 0.7,
       max_tokens: 1024,
@@ -424,7 +405,6 @@ export async function generateProjectIdeas(industry: string, skills: string[]) {
           Suggest innovative and profitable project ideas AND MAKE SURE YOU ONLY RETURN JSON:`,
         },
       ],
-      // model: "gemma2-9b-it",
       model: "gpt-4o-mini",
       temperature: 0.9,
       max_tokens: 2048,
@@ -445,7 +425,6 @@ export async function generateProjectIdeas(industry: string, skills: string[]) {
   }
 }
 
-// Invoice Actions - Using admin client to bypass RLS, fallback to regular client
 export async function saveInvoice(invoiceData: any, userId: string) {
   try {
     const invoiceToInsert = {
@@ -464,7 +443,6 @@ export async function saveInvoice(invoiceData: any, userId: string) {
       status: "draft" as const,
     }
 
-    // Use admin client if available, otherwise use regular client
     const client = supabase
     const { data, error } = await client.from("invoices").insert([invoiceToInsert]).select()
 
@@ -479,7 +457,6 @@ export async function saveInvoice(invoiceData: any, userId: string) {
 
 export async function getInvoices(userId: string) {
   try {
-    // Use admin client if available, otherwise use regular client
     const client = supabase
     const { data, error } = await client
       .from("invoices")
@@ -498,7 +475,6 @@ export async function getInvoices(userId: string) {
 
 export async function updateInvoiceStatus(invoiceId: string, status: "draft" | "sent" | "paid" | "overdue") {
   try {
-    // Use admin client if available, otherwise use regular client
     const client = supabase
     const { error } = await client.from("invoices").update({ status }).eq("id", invoiceId)
 
@@ -511,7 +487,6 @@ export async function updateInvoiceStatus(invoiceId: string, status: "draft" | "
 
 export async function deleteInvoice(invoiceId: string) {
   try {
-    // Use admin client if available, otherwise use regular client
     const client = supabase
     const { error } = await client.from("invoices").delete().eq("id", invoiceId)
 
@@ -525,13 +500,11 @@ export async function deleteInvoice(invoiceId: string) {
 export async function deleteJob(jobId: string, userId: string) {
   const client = supabase
   try {
-    // First, delete all applications for the job
     await client
       .from("job_applications")
       .delete()
       .eq("job_id", jobId)
 
-    // Then, delete the job itself, ensuring the user owns it
     const { error: jobError } = await client
       .from("jobs")
       .delete()
