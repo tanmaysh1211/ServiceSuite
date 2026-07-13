@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini', // other options: llama3-8b, mixtral-8x7b
+        model: 'gpt-4o-mini', 
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 512,
