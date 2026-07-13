@@ -22,7 +22,6 @@ interface CalendarExportProps {
 export function CalendarExport({ tasks }: CalendarExportProps) {
   const [exporting, setExporting] = useState(false)
 
-  // Filter tasks that have deadlines (pending or in_progress)
   const tasksWithDeadlines = tasks.filter((task) => task.status === "todo" || task.status === "in_progress")
 
   const handleExportToAppleCalendar = async () => {
@@ -80,7 +79,6 @@ export function CalendarExport({ tasks }: CalendarExportProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Export All Options */}
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
             onClick={handleExportToAppleCalendar}
@@ -101,7 +99,6 @@ export function CalendarExport({ tasks }: CalendarExportProps) {
           </Button>
         </div>
 
-        {/* Individual Task Export */}
         <div className="space-y-2">
           <h4 className="font-medium text-sm text-gray-700 dark:text-gray-300">Export Individual Tasks:</h4>
           <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -164,7 +161,6 @@ export function CalendarExport({ tasks }: CalendarExportProps) {
           </div>
         </div>
 
-        {/* Instructions */}
         <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1 pt-3 border-t">
           <p>
             <strong>Apple Calendar:</strong> Downloads .ics file that opens in Calendar app
