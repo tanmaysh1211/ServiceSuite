@@ -91,14 +91,6 @@ function JobDetailsContent() {
       .eq("id", jobId)
       .single()
     
-    // if (error) {
-    //   if (error.code === 'PGRST116') {
-    //     setError("Job not found or no longer available.")
-    //   } else {
-    //     setError("Failed to load job details.")
-    //   }
-    //   setJob(null)
-    // }
     if (error) {
   console.error("SUPABASE ERROR:", error);
 
