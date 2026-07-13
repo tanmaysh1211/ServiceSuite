@@ -15,20 +15,18 @@ export default function HomePage() {
     const [showSubtext, setShowSubtext] = useState(false)
 
     useEffect(() => {
-      const timer = setTimeout(() => setShowSubtext(true), 3500) // Typing duration
+      const timer = setTimeout(() => setShowSubtext(true), 3500) 
       return () => clearTimeout(timer)
     }, [])
     
   return (
     <div className="relative min-h-screen bg-white dark:bg-gray-900 transition-colors overflow-hidden">
-      {/* Animated Blobs Background */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute w-72 h-72 bg-indigo-300 dark:bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
         <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
         <div className="absolute top-1/3 left-2/3 w-72 h-72 bg-pink-300 dark:bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
       </div>
 
-      {/* Header */}
       <header className="sticky top-0 z-30 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <nav className="container mx-auto flex items-center justify-between gap-2 px-2 sm:px-4 py-4">
           <div className="flex items-center gap-2">
@@ -37,7 +35,6 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-2">
             <ModeToggle />
-            {/* Hamburger for mobile */}
             <div className="block sm:hidden">
               <Dialog>
                 <DialogTrigger asChild>
@@ -62,7 +59,6 @@ export default function HomePage() {
                 </DialogContent>
               </Dialog>
             </div>
-            {/* Inline buttons for desktop */}
             <div className="hidden sm:flex items-center gap-2">
               <Link href="/auth/signin">
                 <Button variant="outline" className="border-gray-200 dark:border-gray-700" aria-label="Sign In">
@@ -79,7 +75,6 @@ export default function HomePage() {
         </nav>
       </header>
 
-      {/* Hero Section */}
       <motion.section
         className="relative z-10 container mx-auto px-4 py-20 text-center"
         initial={{ opacity: 0, y: 40 }}
@@ -124,7 +119,6 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      {/* Features Section */}
       <section className="relative z-10 container mx-auto px-4 py-20">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Everything You Need to Succeed</h2>
@@ -187,7 +181,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <motion.section
         className="relative z-10 container mx-auto px-2 sm:px-4 py-12 sm:py-20"
         initial={{ opacity: 0 }}
@@ -229,7 +222,6 @@ export default function HomePage() {
         </motion.div>
       </motion.section>
 
-      {/* Footer */}
       <footer className="relative z-10 container mx-auto px-4 py-8 border-t border-gray-200 dark:border-gray-700">
         <div className="text-center text-gray-600 dark:text-gray-300">
           <p>2025 ServiceSuite. Built for student entrepreneurs, by student entrepreneurs.</p>
